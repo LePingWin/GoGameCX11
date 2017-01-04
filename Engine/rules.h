@@ -3,10 +3,10 @@
 
 #include "./ListLib/lst_double.h"
 
-typedef struct Coord{
+typedef struct Pierre{
 	int x;
 	int y;
-} Coord;
+} Pierre;
 
 typedef enum boolean{
 True,False
@@ -16,9 +16,17 @@ typedef enum PlayerType{
 Blanc,Noir
 } PlayerType;
 
+typedef struct Pierre{
+	int x;
+	int y;
+} Pierre;
+
 typedef struct Player{
 	char* nom;
-	PlayerType typeJoueur;
+	PlayerType type;
+	Pierre* pierres
 }Player;
+
+
 
 #endif
