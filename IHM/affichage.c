@@ -1,5 +1,7 @@
 #include "dessine.h"
 #include "../Engine/engine.h"
+#include "../Engine/rules.h"
+
 
 /**
  * Mettre ici son code pour dessiner dans la fenetre
@@ -45,15 +47,22 @@ void mouse_clicked(int bouton, int x, int y)
 		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
 			for(j = 0; j<getNbPierres(); j++) {
 				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
-					color( 1.0,0.0,1.0);
-					filled_circle(largeurBordure + (i+1)*taillePierre,largeurBordure + (j+1)*taillePierre,10);
-					printf("Bouton %d presse au coord. %d,%d \n",bouton,x,y);
+					Pierre p = malloc(sizeof(Pierre));
+					p->x = largeurBordure + (i+1)*taillePierre;
+					p->y = largeurBordure + (j+1)*taillePierre;
+
 				}
 			}
 		}
 	}
 }
 
+
+void dessin_pierre(Pierre p) {
+	color( 1.0,0.0,1.0);
+	filled_circle(p->x,p->y,10);
+	printf("Nouvelle Pierre posé en : %d,%d \n",p->x,p->y);
+}
 
 /**
  * on a appuyé sur une touche

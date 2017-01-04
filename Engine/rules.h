@@ -1,7 +1,7 @@
 #ifndef rules
 #define rules
 
-#include "./ListLib/lst_double.h"
+#include "../ListLib/lst_double.h"
 
 typedef struct Pierre{
 	int x;
