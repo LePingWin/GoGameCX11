@@ -1,5 +1,5 @@
 #include "dessine.h"
-#include "engine.h"
+#include "../Engine/engine.h"
 
 /**
  * Mettre ici son code pour dessiner dans la fenetre
@@ -38,15 +38,20 @@ void draw_win()
 void mouse_clicked(int bouton, int x, int y)
 {
 
-	int i;
+	int i,j;
 	int largeurBordure = getLargeurBordure();
 	int taillePierre = getTaillePierre();
-	for(i = 0; i<getNbPierres(); i+taillePierre) {
-		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2))
+	for(i = 0; i<getNbPierres(); i++) {
+		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
+			for(j = 0; j<getNbPierres(); j++) {
+				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
+					color( 1.0,0.0,1.0);
+					filled_circle(largeurBordure + (i+1)*taillePierre,largeurBordure + (j+1)*taillePierre,10);
+					printf("Bouton %d presse au coord. %d,%d \n",bouton,x,y);
+				}
+			}
+		}
 	}
-	printf("Bouton %d presse au coord. %d,%d \n",bouton,x,y);
-	color( 1.0,0.0,1.0);
-	filled_circle(x,y,10);
 }
 
 

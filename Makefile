@@ -1,14 +1,14 @@
 all: affichage
 
 clean:
-	rm affichage dessine.o libdessine.a
+	rm affichage dessine.o libdessine.a engine.o
 
-affichage: affichage.c dessine.h libdessine.a engine.h engine.o
-	gcc -g affichage.c engine.o -o affichage  -L. -ldessine -lX11
+affichage: IHM/affichage.c IHM/dessine.h IHM/libdessine.a Engine/engine.o Engine/engine.h
+	gcc -g IHM/affichage.c Engine/engine.o -o IHM/affichage  -L./IHM -ldessine -lX11
 
-libdessine.a: dessine.c dessine.h
-	gcc -g -c dessine.c
-	ar -r libdessine.a dessine.o
+libdessine.a: IHM/dessine.c IHM/dessine.h
+	gcc -g -c IHM/dessine.c
+	ar -r IHM/libdessine.a IHM/dessine.o
 
-engine.o: engine.c engine.h
-	gcc -g -c engine.c
+Engine/engine.o: Engine/engine.c Engine/engine.h
+	gcc -g -c Engine/engine.c
