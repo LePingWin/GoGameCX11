@@ -1,0 +1,3 @@
+#Ignorer .o et .a
+.o
+.a
