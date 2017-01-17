@@ -144,5 +144,5 @@ void pixel(int x, int y)
 
 void string(int x, int y, char* chaine)
 {
-	XDrawString(display,win,gc,10,10, chaine, strlen(chaine));
+	XDrawString(display,win,gc,x,y, chaine, strlen(chaine));
 }

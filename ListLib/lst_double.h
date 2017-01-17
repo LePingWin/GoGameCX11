@@ -1,7 +1,10 @@
 #ifndef lst_double
 #define lst_double
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef int Bool;
+
+typedef int bool;
 #define true 1;
 #define false 0;
 
@@ -9,17 +12,17 @@ typedef struct SNoeud
 {
 	int value;
 	struct SNoeud* next;
-	struct SNoeud* prec;	
+	struct SNoeud* prec;
 } Noeud;
 typedef struct SListe
 {
 	Noeud* tete;
 	Noeud* queue;
 	int nbNoeud;
-	
+
 }Liste;
 
-Bool est_vide(Liste* l);
+bool est_vide(Liste* l);
 
 Liste* liste_vide();
 
@@ -48,4 +51,4 @@ Noeud* insert_after(Liste* l,Noeud* c, int v);
 
 void apply(Liste* l,void (*fonction)(int*));
 
-#endif 
+#endif

@@ -31,6 +31,12 @@ void draw_win()
 
 }
 
+void dessin_pierre(int c) {
+	color( 1.0,0.0,1.0);
+	filled_circle(getX(c),getY(c),10);
+	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
+}
+
 
 /**
  * on a cliqué a la souris:
@@ -47,10 +53,10 @@ void mouse_clicked(int bouton, int x, int y)
 		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
 			for(j = 0; j<getNbPierres(); j++) {
 				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
-					Pierre p = malloc(sizeof(Pierre));
-					p->x = largeurBordure + (i+1)*taillePierre;
-					p->y = largeurBordure + (j+1)*taillePierre;
-
+					int xp = largeurBordure + (i+1)*taillePierre;
+					int yp = largeurBordure + (j+1)*taillePierre;
+					int coord = getCoord(xp, yp);
+					dessin_pierre(coord);
 				}
 			}
 		}
@@ -58,11 +64,7 @@ void mouse_clicked(int bouton, int x, int y)
 }
 
 
-void dessin_pierre(Pierre p) {
-	color( 1.0,0.0,1.0);
-	filled_circle(p->x,p->y,10);
-	printf("Nouvelle Pierre posé en : %d,%d \n",p->x,p->y);
-}
+
 
 /**
  * on a appuyé sur une touche

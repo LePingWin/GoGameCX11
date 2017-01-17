@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "lst_double.h"
 
-Bool est_vide(Liste* l){
+bool est_vide(Liste* l){
 	if(l->nbNoeud == 0){
 		return true;
 	}
@@ -22,7 +22,7 @@ Noeud* push_front(Liste* l, int v){
 	n1->value = v;
 	n1->prec = NULL;
 	n1->next = l->tete;
-	
+
 	if(est_vide(l) == 1){
 		l->queue = n1;
 	}else{
@@ -30,7 +30,7 @@ Noeud* push_front(Liste* l, int v){
 	}
 	l->tete = n1;
 	l->nbNoeud++;
-	return n1; 
+	return n1;
 }
 
 void pop_front(Liste* l){
@@ -57,7 +57,7 @@ Noeud* push_back(Liste* l, int v){
 	nr->value = v;
 	nr->next = NULL;
 	nr->prec = l->queue;
-	
+
 	if(est_vide(l) == 1){
 		l->tete = nr;
 	}else{
@@ -194,4 +194,3 @@ void apply(Liste* l,void (*fonction)(int*)){
 void foisdeux(int* v){
 	*v*=2;
 }
-

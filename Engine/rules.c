@@ -13,8 +13,3 @@ int getY(int c){
 int getCoord(int x,int y){
 	return x << 16 | y;
 }
-
-int main()
-{
-	return 0;
-}
