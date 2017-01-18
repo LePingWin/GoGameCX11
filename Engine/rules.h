@@ -3,10 +3,6 @@
 
 #include "../ListLib/lst_double.h"
 
-typedef int bool;
-#define true 1;
-#define false 0;
-
 typedef enum PlayerType{
 Blanc,Noir
 } PlayerType;
@@ -15,7 +11,8 @@ typedef struct Player{
 	char* nom;
 	PlayerType type;
 	//Tableaux de listes
-	Liste* pierres;
+	Liste** pierres;
+	int nbListe;
 }Player;
 
 //Int sur 32bits donc x prend 16 bits et y 16 bits

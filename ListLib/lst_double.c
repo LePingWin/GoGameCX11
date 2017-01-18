@@ -85,9 +85,6 @@ void pop_back(Liste* l){
 }
 
 int back_val(Liste* l){
-	if(l->queue == NULL){
-		return (int)NULL;
-	}
 	return l->queue->value;
 }
 

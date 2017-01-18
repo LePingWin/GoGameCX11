@@ -28,14 +28,25 @@ void draw_win()
 
 	color(11,1,1);
 	string(5,5,"Test Affichage chaine");
-
+printf("wesh");
 }
 
 void dessin_pierre(int c) {
-	color( 1.0,0.0,1.0);
-	filled_circle(getX(c),getY(c),10);
-	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
+	Player* p = getCurrentPlayer();
+	if(p->type == Blanc) {
+		color( 1.0,1.0,1.0);
+	} else {
+		color( 0.0,0.0,0.0);
+	}
+	printf("est vide %d", intersection_est_vide(c));
+	if( intersection_est_vide(c) == 1) {
+		filled_circle(getX(c),getY(c),10);
+		printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
+		incrementeCptTours();
+	}
 }
+
+
 
 
 /**
@@ -45,7 +56,6 @@ void dessin_pierre(int c) {
  */
 void mouse_clicked(int bouton, int x, int y)
 {
-
 	int i,j;
 	int largeurBordure = getLargeurBordure();
 	int taillePierre = getTaillePierre();
@@ -55,13 +65,15 @@ void mouse_clicked(int bouton, int x, int y)
 				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
 					int xp = largeurBordure + (i+1)*taillePierre;
 					int yp = largeurBordure + (j+1)*taillePierre;
-					int coord = getCoord(xp, yp);
-					dessin_pierre(coord);
+					printf("wesh");
+					dessin_pierre(addPierre(xp,yp));
 				}
 			}
 		}
 	}
 }
+
+
 
 
 
