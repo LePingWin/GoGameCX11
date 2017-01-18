@@ -32,18 +32,17 @@ printf("wesh");
 }
 
 void dessin_pierre(int c) {
-	Player* p = getCurrentPlayer();
-	if(p->type == Blanc) {
+	Player p = getCurrentPlayer();
+	if(p.type == Blanc) {
 		color( 1.0,1.0,1.0);
 	} else {
 		color( 0.0,0.0,0.0);
 	}
-	printf("est vide %d", intersection_est_vide(c));
-	if( intersection_est_vide(c) == 1) {
-		filled_circle(getX(c),getY(c),10);
-		printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
-		incrementeCptTours();
-	}
+
+	filled_circle(getX(c),getY(c),10);
+	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
+	incrementeCptTours();
+
 }
 
 
@@ -66,7 +65,9 @@ void mouse_clicked(int bouton, int x, int y)
 					int xp = largeurBordure + (i+1)*taillePierre;
 					int yp = largeurBordure + (j+1)*taillePierre;
 					printf("wesh");
-					dessin_pierre(addPierre(xp,yp));
+					if( intersection_est_vide(getCoord(xp,yp)) == true) {
+						dessin_pierre(addPierre(xp,yp));
+					}
 				}
 			}
 		}

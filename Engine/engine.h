@@ -29,7 +29,7 @@ bool intersection_est_vide(int coord);
 /**
  * player a qui le tour
  */
-Player* getCurrentPlayer();
+Player getCurrentPlayer();
 /**
  * Récupère un tableau des pierres adjacentes possibles
  */
@@ -37,7 +37,7 @@ void getAdjacent(int xp, int yp, int* tab);
   /**
    * regarde si une pierre adjacente est deja dans une liste
    */
-int isAnyPierreAdjacent(int* tab, Player* p);
+Adjacent isAnyPierreAdjacent(int* tab, Player p);
 /**
  * ajouter une pierre dans la bonne liste
  */

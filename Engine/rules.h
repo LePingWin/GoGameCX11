@@ -15,6 +15,11 @@ typedef struct Player{
 	int nbListe;
 }Player;
 
+typedef struct Adjacent{
+	int* adjs;
+	int nbAdj;
+}Adjacent;
+
 //Int sur 32bits donc x prend 16 bits et y 16 bits
 int getX(int c);
 

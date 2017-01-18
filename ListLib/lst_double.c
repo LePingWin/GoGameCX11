@@ -10,7 +10,7 @@ bool est_vide(Liste* l){
 }
 
 Liste* liste_vide(){
-	Liste* l1 = malloc(sizeof(Liste));
+	Liste* l1 = malloc(sizeof(Liste*));
 	l1->tete = NULL;
 	l1->queue = NULL;
 	l1->nbNoeud = 0;
