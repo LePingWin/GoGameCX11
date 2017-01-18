@@ -2,6 +2,7 @@
 #define rules
 
 #include "../ListLib/lst_double.h"
+#include "../Tab1DLib/tab1.h"
 
 typedef enum PlayerType{
 Blanc,Noir

@@ -1,22 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "../ListLib/lst_double.h"
 
 typedef int bool;
 
-void print(int array[], int size){
+/*void print(int array[], int size){
 int i;
 for(i = 0;i<size;i++){
 printf("%d\n",array[i]);
-}	
-return;
 }
+return;
+}*/
 
 void print_char(char array[], int size){
 int i;
 for(i = 0;i<size;i++){
 printf("%c",array[i]);
-}	
+}
 puts("");
 return;
 }
@@ -25,7 +26,7 @@ void read(int array[], int size){
 int i;
 for(i = 0;i<size;i++){
 scanf("%d",&array[i]);
-}	
+}
 return;
 }
 
@@ -37,14 +38,14 @@ for(i = 0;i<size;i++){
 		max = array[i];
 	}
 }
-return max;	
+return max;
 }
 
-void swap_elt( int array[], int size, int i, int j ){
-int save = array[i];
-array[i] = array[j];
-array[j] = save;
-return;
+void swap_elt( Liste* array[], int i, int j ){
+	Liste* save = array[i];
+	array[i] = array[j];
+	array[j] = save;
+	return;
 }
 
 void swap_elt_char( char array[], int size, int i, int j ){
@@ -60,7 +61,7 @@ int count = 0;
 for(i = 0;i<size;i++){
 	if(array[i] == el){
 		count++;
-	}	
+	}
 }
 return count;
 }
@@ -70,7 +71,7 @@ int i;
 for(i = 0;i<size;i++){
 	if(array[i] == el){
 		return i;
-	}	
+	}
 }
 return -1;
 }
@@ -80,7 +81,7 @@ int i;
 for(i = size;i>=0;i--){
 	if(array[i] == el){
 		return i;
-	}	
+	}
 }
 return -1;
 }
@@ -91,20 +92,20 @@ for(i = 0;i<size;i++){
 	int save = array[size-i];
 	array[size-i] = array[i];
 	array[i] = save;
-}	
+}
 return;
 }
 
-void rotate_right( int array[ ], int size ){
-int i;
-int save = array[size-1];
-int tab[size];
-memcpy(tab,array,sizeof(tab));
-for(i = 0;i<size-1;i++){
-array[i+1] = tab[i]; 
-}
-array[0] = save;
-return;	
+void rotate_right( int array[], int size ){
+	int i;
+	int save = array[size-1];
+	int tab[size];
+	memcpy(tab,array,sizeof(tab));
+	for(i = 0;i<size-1;i++){
+		array[i+1] = tab[i];
+	}
+	array[0] = save;
+	return;
 }
 
 void rotate_left( int array[ ], int size ){
@@ -113,10 +114,10 @@ int save = array[0];
 int tab[size];
 memcpy(tab,array,sizeof(tab));
 for(i = 0;i<size-1;i++){
-array[i] = tab[i+1]; 
+array[i] = tab[i+1];
 }
 array[size-1] = save;
-return;	
+return;
 }
 
 bool is_palindrome(int array[], int size){

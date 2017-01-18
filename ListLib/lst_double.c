@@ -188,6 +188,14 @@ void apply(Liste* l,void (*fonction)(int*)){
 	}
 }
 
+void applyCompteur(Liste* l,int* cpt,void (*fonction)(int*,int*)){
+	Noeud* na = l->tete;
+	while(na != NULL){
+		fonction(&na->value,cpt);
+		na = na->next;
+	}
+}
+
 void foisdeux(int* v){
 	*v*=2;
 }

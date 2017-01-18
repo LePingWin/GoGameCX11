@@ -35,9 +35,22 @@ Player getCurrentPlayer();
  */
 void getAdjacent(int xp, int yp, int* tab);
   /**
-   * regarde si une pierre adjacente est deja dans une liste
+   * regarde si une pierre adjacente est deja dans une liste du joueur courant
    */
 Adjacent isAnyPierreAdjacent(int* tab, Player p);
+/**
+ * regarde si une pierre adjacente est deja dans une liste de tous les joueurs 
+ */
+Adjacent isAnyPierreAdjacentInEveryTable(int* tab);
+/**
+ * merge deux chaines lorsque qu'une nouvelle pierre est adjacente à une ou plusieurs pierres de listes différentes
+ */
+Player mergeChaines(Adjacent tab, Player p, int c);
+/**
+ * supprime un élément du tableau de pierre
+ */
+Player supr_elem(Player p, int position );
+
 /**
  * ajouter une pierre dans la bonne liste
  */

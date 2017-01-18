@@ -76,15 +76,71 @@ Adjacent isAnyPierreAdjacent(int* tab, Player p) {
 	return adj;
 }
 
-Player mergeChaines(Adjacent tab, Player p) {
+Adjacent isAnyPierreAdjacentInEveryTable(int* tab) {
+	Noeud* n1;
+	Adjacent adj;
+	adj.adjs = malloc(sizeof(int)*4);
+	adj.nbAdj = 0;
+	Player p;
+	for(int i = 0; i < 2; i++) {
+		if(i == 0) {
+			p = P1;
+		} else {
+			p = P2;
+		}
+		for (int i = 0; i < p.nbListe; i++) {
+			for(int j = 0; j < 4; j++) {
+					n1 = trouve_premier(p.pierres[i], tab[j]);
+					if(n1 != NULL) {
+						adj.adjs[adj.nbAdj] = i;
+						adj.nbAdj++;
+					}
+			}
+		}
+	}
+	return adj;
+}
+
+Player mergeChaines(Adjacent tab, Player p, int c) {
 	Liste* grosseListe = liste_vide();
 	for(int i = 0; i < tab.nbAdj;i++) {
 		Liste* l = p.pierres[tab.adjs[i]];
-		while(est_vide(l == false) {
-			push_front(l, front_val(l));
+		while(est_vide(l) == false) {
+			push_front(grosseListe, front_val(l));
 			pop_front(l);
 		}
 	}
+	p.pierres[p.nbListe] = grosseListe;
+	p.nbListe++;
+	push_front(p.pierres[p.nbListe-1], c);
+	for (int i = 0; i < tab.nbAdj; i++) {
+		printf("nb tour %d", tab.adjs[i]);
+		p = supr_elem(p,tab.adjs[i]);
+	}
+
+	return p;
+}
+
+Player supr_elem(Player p, int position ) {
+	swap_elt(p.pierres,position,p.nbListe-1);
+	printf("suppr element %d", p.nbListe-1);
+	free(p.pierres[p.nbListe-1]);
+	p.nbListe--;
+	return p;
+}
+
+void getCptDegre(int* val,int* cpt){
+	int tab[4];
+	getAdjacent(getX(*val),getY(*val), tab);
+	Adjacent adj = isAnyPierreAdjacentInEveryTable(tab);
+	*cpt += 4-adj.nbAdj;
+}
+
+int getDegreLiberte(Liste* l) {
+	Liste* copyListe = liste_vide();
+	int cpt = 0;
+	applyCompteur(l,&cpt,getCptDegre);
+	return cpt;
 }
 
 int addPierre(int xp, int yp) {
@@ -97,7 +153,7 @@ int addPierre(int xp, int yp) {
 	if(anyAdjacent.nbAdj == 1)  {
 		push_front(p.pierres[anyAdjacent.adjs[0]], coord);
 	} else if(anyAdjacent.nbAdj > 1) {
-
+		p = mergeChaines(anyAdjacent,p,coord);
 	} else {
 		p.pierres[p.nbListe] = liste_vide();
 		push_front(p.pierres[p.nbListe], coord);
@@ -106,6 +162,7 @@ int addPierre(int xp, int yp) {
 	printf("Player %s     ", p.nom);
 	for(int i =0; i < p.nbListe; i++) {
 		print(p.pierres[i]);
+		printf("Nb degre de liberte %d", getDegreLiberte(p.pierres[i]));
 		printf("\n");
 	}
 	printf("\n");
