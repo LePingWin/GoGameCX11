@@ -180,6 +180,19 @@ Noeud* insert_after(Liste* l,Noeud* c, int v){
 	return n;
 }
 
+bool equals(Liste* l1, Liste* l2) {
+	Noeud* na = l1->tete;
+	Noeud* nb = l2->tete;
+	while(na != NULL){
+		if(na->value != nb->value) {
+			return false;
+		}
+		na = na->next;
+		nb = nb->next;
+	}
+	return true;
+}
+
 void apply(Liste* l,void (*fonction)(int*)){
 	Noeud* na = l->tete;
 	while(na != NULL){

@@ -7,10 +7,13 @@ int nb_pierres;
 int cpt_tours;
 Player P1;
 Player P2;
+int* plateauT_1;
+int* plateau;
+int* tourSuiv;
 
 //accesseur
 int getNbPierres() {
-	return nb_pierres;
+	return nb_pierres+1;
 }
 
 int getTaillePierre() {
@@ -22,6 +25,8 @@ int getCptTours() {
 }
 
 void incrementeCptTours() {
+	int size = getNbPierres()*getNbPierres();
+	plateauT_1 = copyPlateau(plateau,size);
 	cpt_tours++;
 }
 
@@ -51,6 +56,15 @@ Player getCurrentPlayer() {
 	}
 	return P2; // si 1, return player Noir
 }
+
+Player getOppositePlayer() {
+	int tour = getCptTours();
+	if( tour % 2 == 0) {
+		return P2; // si 1, retourn player Blanc
+	}
+	return P1; // si 0, return player Noir
+}
+
 
 Player getPlayer(int player) {
 	if(player == 0) {
@@ -121,7 +135,7 @@ Player mergeChaines(Adjacent tab, Player p, int c) {
 	p.nbListe++;
 	push_front(p.pierres[p.nbListe-1], c);
 	for (int i = 0; i < tab.nbAdj; i++) {
-		printf("nb tour %d", tab.adjs[i]);
+		//printf("nb tour %d", tab.adjs[i]);
 		p = supr_elem(p,tab.adjs[i]);
 	}
 
@@ -129,11 +143,42 @@ Player mergeChaines(Adjacent tab, Player p, int c) {
 }
 
 Player supr_elem(Player p, int position ) {
+	removePierreInPlateau(p.pierres[position]);
 	swap_elt(p.pierres,position,p.nbListe-1);
-	printf("suppr element %d", p.nbListe-1);
-	free(p.pierres[p.nbListe-1]);
+	//printf("suppr element %d", p.nbListe-1);
+
+	//free(p.pierres[p.nbListe-1]);
 	p.nbListe--;
 	return p;
+}
+
+void removePierreInPlateau(Liste* l) {
+
+	while(est_vide(l) == false) {
+	  int coord = front_val(l);
+		int x = getX(coord);
+		int y = getY(coord);
+		bool stop = false;
+		int cpt = 0;
+		int resX = -1;
+		int resY = -1;
+		//printf("hello");
+		//ajuster les coordonées
+		pop_front(l);
+		while(resX == -1 || resY == -1) {
+			if((x - 50 - cpt*getTaillePierre()) == 0) {
+				resX = cpt;
+				//printf("resX = %d", resX);
+			}
+			if((y - 50 - cpt*getTaillePierre()) == 0) {
+				resY = cpt;
+				//printf("resY = %d", resY);
+			}
+			cpt++;
+		}
+		plateau[resY*getNbPierres() + resX] = 0;
+	}
+
 }
 
 void getCptDegre(int* val,int* cpt){
@@ -166,7 +211,7 @@ int addPierre(int xp, int yp) {
 		push_front(p.pierres[p.nbListe], coord);
 		p.nbListe++;
 	}
-	printf("Player %s     ", p.nom);
+	//printf("Player %s     ", p.nom);
 	for(int i =0; i < p.nbListe; i++) {
 		print(p.pierres[i]);
 		printf("Nb degre de liberte %d", getDegreLiberte(p.pierres[i]));
@@ -185,28 +230,61 @@ int addPierre(int xp, int yp) {
 
 
 bool capturePion() {
-	Player p;
+	Player p = getOppositePlayer();
+
 	bool refresh = false;
-	for(int i = 0; i < 2; i++) {
-		if(i == 0) {
-			p = P1;
-		} else {
-			p = P2;
-		}
-		for(int j = 0; j < p.nbListe; j++) {
-			if(getDegreLiberte(p.pierres[j]) == 0) {
-				print(p.pierres[j]);
-				p = supr_elem(p,j);
-				refresh = true;
-			}
-		}
-		if(i == 0) {
-			P1 = p;
-		} else {
-			P2 = p;
+	for(int j = 0; j < p.nbListe; j++) {
+		if(getDegreLiberte(p.pierres[j]) == 0) {
+			print(p.pierres[j]);
+			p = supr_elem(p,j);
+			refresh = true;
 		}
 	}
+	if(p.type == Blanc) {
+		printf("blanc");
+		P1 = p;
+	} else {
+		P2 = p;
+	}
 	return refresh;
+}
+
+void fill_plateau(int x, int y, int playerValue) {
+	plateau[y*getNbPierres() + x] = playerValue;
+}
+
+void printPlateau() {
+	for(int i = 0; i < getNbPierres(); i++) {
+			for(int j = 0; j < getNbPierres(); j++) {
+				printf("[%d]",plateau[i*getNbPierres() + j]);
+		}
+		printf("\n");
+	}
+}
+
+
+bool repetition(int x, int y,int playerValue) {
+	int size = getNbPierres()*getNbPierres();
+
+	//Copie des plateaux à t-1 et t+1
+	tourSuiv = copyPlateau(plateau,size);
+	tourSuiv[y*getNbPierres() + x] = playerValue;
+		//Parcours des deux tableaux
+		for (int i = 0; i < size; i++) {
+			if(tourSuiv[i] == playerValue){
+				if(tourSuiv[i] != plateauT_1[i]){
+					return false;
+				}
+			}
+		}
+		return true;
+}
+
+//copie les plateaux
+int* copyPlateau(int* const src, size_t len) {
+	int* p = malloc(len*sizeof(int));
+	memcpy(p, src,len*sizeof(int));
+	return p;
 }
 
 Player init_player(char* nom, PlayerType playerType) {
@@ -224,6 +302,8 @@ void init_go(int p, int tp) {
   taille_pierre = tp;
 	PlayerType blanc = Blanc;
 	PlayerType noir = Noir;
+	plateau = calloc(getNbPierres()*getNbPierres(),sizeof(int));
+	plateauT_1 = copyPlateau(plateau,getNbPierres()*getNbPierres());
 	P1 = init_player("P1", blanc);
 	P2 = init_player("P2", noir);
 	cpt_tours = 1;

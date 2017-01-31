@@ -30,6 +30,13 @@ bool intersection_est_vide(int coord);
  * player a qui le tour
  */
 Player getCurrentPlayer();
+
+/**
+ * player a kipa le tour
+ */
+
+Player getPlayer(int player);
+
 /**
  * get player
  */
@@ -54,11 +61,30 @@ Player mergeChaines(Adjacent tab, Player p, int c);
  * supprime un élément du tableau de pierre
  */
 Player supr_elem(Player p, int position );
-
+/**
+ * supprime un élément du tableau de pierre
+ */
+void removePierreInPlateau(Liste* l);
 /**
  * ajouter une pierre dans la bonne liste
  */
 int addPierre(int xp, int yp);
+/**
+* remplit le tableau lors de l'ajout de pierre
+*/
+void fill_plateau(int x, int y, int playerValue);
+/**
+* print le plateau
+*/
+void printPlateau();
+/**
+* check si il y a une repetition entrel e tour T-1 et le tour T+1
+*/
+bool repetition(int x, int y,int playerValue);
+/**
+* copie les tableaux
+*/
+int* copyPlateau(int* const src, size_t len);
 /**
 * supprimer les pions capturés
 */

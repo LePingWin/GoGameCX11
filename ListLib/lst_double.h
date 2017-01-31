@@ -48,6 +48,9 @@ Noeud* trouve_dernier(Liste* l, int v);
 void retire(Liste* l, Noeud* n);
 
 Noeud* insert_after(Liste* l,Noeud* c, int v);
+
+bool equals(Liste* l1, Liste* l2);
+
 void applyCompteur(Liste* l,int* cpt,void (*fonction)(int*,int*));
 
 void apply(Liste* l,void (*fonction)(int*));

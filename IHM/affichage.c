@@ -27,7 +27,6 @@ void draw_win()
 
 	color(1,1,1);
 	string(5,5,"Test Affichage chaine");
-printf("wesh");
 }
 
 void add_dessin_pierre(int* c) {
@@ -64,8 +63,7 @@ void dessin_pierre(int c) {
 	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
 	incrementeCptTours();
 
-	if(capturePion() == 1)
-		refreshTable();
+
 }
 
 
@@ -83,16 +81,32 @@ void mouse_clicked(int bouton, int x, int y)
 	int i,j;
 	int largeurBordure = getLargeurBordure();
 	int taillePierre = getTaillePierre();
-	for(i = 0; i<getNbPierres(); i++) {
+	for(i = -1; i<getNbPierres()-1; i++) {
 		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
-			for(j = 0; j<getNbPierres(); j++) {
+			for(j = -1; j<getNbPierres()-1; j++) {
 				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
 					int xp = largeurBordure + (i+1)*taillePierre;
 					int yp = largeurBordure + (j+1)*taillePierre;
-					printf("wesh");
-					if( intersection_est_vide(getCoord(xp,yp)) == true) {
-						dessin_pierre(addPierre(xp,yp));
+					Player p = getCurrentPlayer();
+					int playerValue =0;
+					if(p.type == Blanc) {
+						playerValue = 1;
+					} else {
+						playerValue = 2;
 					}
+					if(repetition(i+1,j+1,playerValue) == 0) {
+						if( intersection_est_vide(getCoord(xp,yp)) == true) {
+							fill_plateau(i+1,j+1,playerValue);
+							printPlateau();
+							dessin_pierre(addPierre(xp,yp));
+							if(capturePion() == 1)
+								refreshTable();
+						}
+					}
+					else {
+						printf("\nRepetition, be careful !!");
+					}
+
 				}
 			}
 		}
@@ -145,10 +159,10 @@ void key_pressed(KeySym code, char c, int x_souris, int y_souris)
 int main()
 {
 	int taillePierre = 24;
-	int nbPierres = 19;
+	int nbPierres = 6;
 	int largeurBordure = 50;
 	init_go(nbPierres, taillePierre);
-	init_win(taillePierre*getNbPierres()+largeurBordure*2,taillePierre*getNbPierres()+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);
+	init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);
 	event_loop();
 	return EXIT_SUCCESS;
 }
