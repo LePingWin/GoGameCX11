@@ -14,8 +14,7 @@ void draw_win()
 
 	int i,j;
 
-	float g = (float)rand()/RAND_MAX;
-	color(g,g,g);
+	color(0.75,0.80,0.80);
 	filled_rectangle(0,0,height_win(),width_win());
 
 	color(1,0,0);
@@ -26,10 +25,32 @@ void draw_win()
 	for(i=largeurBordure; i<=width_win()-largeurBordure; i+=getTaillePierre())
 		line(largeurBordure,i, width_win()-largeurBordure, i);
 
-	color(11,1,1);
+	color(1,1,1);
 	string(5,5,"Test Affichage chaine");
 printf("wesh");
 }
+
+void add_dessin_pierre(int* c) {
+	filled_circle(getX(*c),getY(*c),10);
+}
+
+void refreshTable() {
+	draw_win();
+	Player p;
+	for(int i = 0; i < 2; i++) {
+		p = getPlayer(i);
+		if(i == 0) {
+			color( 1.0,1.0,1.0);
+		} else {
+			color( 0.0,0.0,0.0);
+		}
+		for (int j = 0; j < p.nbListe; j++) {
+				apply(p.pierres[j],add_dessin_pierre);
+		}
+	}
+}
+
+
 
 void dessin_pierre(int c) {
 	Player p = getCurrentPlayer();
@@ -43,7 +64,11 @@ void dessin_pierre(int c) {
 	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
 	incrementeCptTours();
 
+	if(capturePion() == 1)
+		refreshTable();
 }
+
+
 
 
 

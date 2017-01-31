@@ -31,6 +31,10 @@ bool intersection_est_vide(int coord);
  */
 Player getCurrentPlayer();
 /**
+ * get player
+ */
+Player getPlayer(int player);
+/**
  * Récupère un tableau des pierres adjacentes possibles
  */
 void getAdjacent(int xp, int yp, int* tab);
@@ -39,7 +43,7 @@ void getAdjacent(int xp, int yp, int* tab);
    */
 Adjacent isAnyPierreAdjacent(int* tab, Player p);
 /**
- * regarde si une pierre adjacente est deja dans une liste de tous les joueurs 
+ * regarde si une pierre adjacente est deja dans une liste de tous les joueurs
  */
 Adjacent isAnyPierreAdjacentInEveryTable(int* tab);
 /**
@@ -55,6 +59,10 @@ Player supr_elem(Player p, int position );
  * ajouter une pierre dans la bonne liste
  */
 int addPierre(int xp, int yp);
+/**
+* supprimer les pions capturés
+*/
+bool capturePion();
 /**
  * initialise les joueurs
  */

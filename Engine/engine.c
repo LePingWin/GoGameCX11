@@ -52,6 +52,13 @@ Player getCurrentPlayer() {
 	return P2; // si 1, return player Noir
 }
 
+Player getPlayer(int player) {
+	if(player == 0) {
+		return P1;
+	}
+	return P2;
+}
+
 void getAdjacent(int xp, int yp, int* tab) {
 	tab[0] = getCoord(xp, yp - 24);
 	tab[1] = getCoord(xp, yp + 24);
@@ -174,6 +181,32 @@ int addPierre(int xp, int yp) {
 	}
 	free(anyAdjacent.adjs);
 	return coord;
+}
+
+
+bool capturePion() {
+	Player p;
+	bool refresh = false;
+	for(int i = 0; i < 2; i++) {
+		if(i == 0) {
+			p = P1;
+		} else {
+			p = P2;
+		}
+		for(int j = 0; j < p.nbListe; j++) {
+			if(getDegreLiberte(p.pierres[j]) == 0) {
+				print(p.pierres[j]);
+				p = supr_elem(p,j);
+				refresh = true;
+			}
+		}
+		if(i == 0) {
+			P1 = p;
+		} else {
+			P2 = p;
+		}
+	}
+	return refresh;
 }
 
 Player init_player(char* nom, PlayerType playerType) {
