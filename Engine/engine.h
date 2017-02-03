@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "rules.h"
+#include "../IHM/dessine.h"
 
 /**
  * Nombre de pierres

@@ -25,8 +25,6 @@ int getCptTours() {
 }
 
 void incrementeCptTours() {
-	int size = getNbPierres()*getNbPierres();
-	plateauT_1 = copyPlateau(plateau,size);
 	cpt_tours++;
 }
 
@@ -74,10 +72,52 @@ Player getPlayer(int player) {
 }
 
 void getAdjacent(int xp, int yp, int* tab) {
-	tab[0] = getCoord(xp, yp - 24);
-	tab[1] = getCoord(xp, yp + 24);
-	tab[2] = getCoord(xp-24, yp);
-	tab[3] = getCoord(xp+24, yp);
+	if(xp -24 < getLargeurBordure() && yp - 24 < getLargeurBordure()) {
+		tab[0] = getCoord(xp, yp + 24);
+		tab[1] = getCoord(xp + 24, yp);
+		tab[2] = -1;
+		tab[3] = -1;
+	} else if (xp -24 < getLargeurBordure() && yp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre()) {
+		tab[0] = getCoord(xp + 24, yp);
+		tab[1] = getCoord(xp, yp -24);
+		tab[2] = -1;
+		tab[3] = -1;
+	} else if (xp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre() && yp - 24 < getLargeurBordure()) {
+		tab[0] = getCoord(xp, yp + 24);
+		tab[1] = getCoord(xp - 24, yp);
+		tab[2] = -1;
+		tab[3] = -1;
+	} else if (xp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre() && yp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre()) {
+		tab[0] = getCoord(xp, yp - 24);
+		tab[1] = getCoord(xp - 24, yp);
+		tab[2] = -1;
+		tab[3] = -1;
+	} else if(xp - 24 < getLargeurBordure()) {
+		tab[0] = getCoord(xp, yp + 24);
+		tab[1] = getCoord(xp, yp -24);
+		tab[2] = getCoord(xp+24, yp);
+		tab[3] = -1;
+	} else if(xp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre()) {
+		tab[0] = getCoord(xp, yp + 24);
+		tab[1] = getCoord(xp-24, yp);
+		tab[2] = getCoord(xp, yp - 24);
+		tab[3] = -1;
+	} else if (yp - 24 < getLargeurBordure()) {
+		tab[0] = getCoord(xp, yp + 24);
+		tab[1] = getCoord(xp-24, yp);
+		tab[2] = getCoord(xp+24, yp);
+		tab[3] = -1;
+	} else if (yp + 24 > getLargeurBordure() + (getNbPierres()-1)*getTaillePierre()) {
+		tab[0] = getCoord(xp, yp - 24);
+		tab[1] = getCoord(xp-24, yp);
+		tab[2] = getCoord(xp+24, yp);
+		tab[3] = -1;
+	} else {
+		tab[0] = getCoord(xp, yp - 24);
+		tab[1] = getCoord(xp, yp + 24);
+		tab[2] = getCoord(xp-24, yp);
+		tab[3] = getCoord(xp+24, yp);
+	}
 }
 
 Adjacent isAnyPierreAdjacent(int* tab, Player p) {
@@ -85,8 +125,14 @@ Adjacent isAnyPierreAdjacent(int* tab, Player p) {
 	Adjacent adj;
 	adj.adjs = malloc(sizeof(int)*4);
 	adj.nbAdj = 0;
+	int nbAdjacentPossible = 4;
+	if(tab[2] == -1) {
+		nbAdjacentPossible = 2;
+	} else if(tab[3] == -1) {
+		nbAdjacentPossible = 3;
+	}
 	for (int i = 0; i < p.nbListe; i++) {
-		for(int j = 0; j < 4; j++) {
+		for(int j = 0; j < nbAdjacentPossible; j++) {
 				n1 = trouve_premier(p.pierres[i], tab[j]);
 				if(n1 != NULL) {
 					adj.adjs[adj.nbAdj] = i;
@@ -103,6 +149,12 @@ Adjacent isAnyPierreAdjacentInEveryTable(int* tab) {
 	adj.adjs = malloc(sizeof(int)*4);
 	adj.nbAdj = 0;
 	Player p;
+	int nbAdjacentPossible = 4;
+	if(tab[2] == -1) {
+		nbAdjacentPossible = 2;
+	} else if(tab[3] == -1) {
+		nbAdjacentPossible = 3;
+	}
 	for(int i = 0; i < 2; i++) {
 		if(i == 0) {
 			p = P1;
@@ -110,7 +162,7 @@ Adjacent isAnyPierreAdjacentInEveryTable(int* tab) {
 			p = P2;
 		}
 		for (int i = 0; i < p.nbListe; i++) {
-			for(int j = 0; j < 4; j++) {
+			for(int j = 0; j < nbAdjacentPossible; j++) {
 					n1 = trouve_premier(p.pierres[i], tab[j]);
 					if(n1 != NULL) {
 						adj.adjs[adj.nbAdj] = i;
@@ -185,7 +237,14 @@ void getCptDegre(int* val,int* cpt){
 	int tab[4];
 	getAdjacent(getX(*val),getY(*val), tab);
 	Adjacent adj = isAnyPierreAdjacentInEveryTable(tab);
-	*cpt += 4-adj.nbAdj;
+	if(tab[2] == -1) {
+		*cpt += 2-adj.nbAdj;
+	} else if(tab[3] == -1) {
+		*cpt += 3-adj.nbAdj;
+	} else {
+		*cpt += 4-adj.nbAdj;
+	}
+
 }
 
 int getDegreLiberte(Liste* l) {
@@ -196,6 +255,9 @@ int getDegreLiberte(Liste* l) {
 }
 
 int addPierre(int xp, int yp) {
+
+	int size = getNbPierres()*getNbPierres();
+	plateauT_1 = copyPlateau(plateau,size);
 	Player p = getCurrentPlayer();
 	int tab[4];
 	getAdjacent(xp,yp, tab);
@@ -244,6 +306,7 @@ bool capturePion() {
 		printf("blanc");
 		P1 = p;
 	} else {
+		printf("noir");
 		P2 = p;
 	}
 	return refresh;
@@ -254,6 +317,7 @@ void fill_plateau(int x, int y, int playerValue) {
 }
 
 void printPlateau() {
+	printf("Tour actuelle :");
 	for(int i = 0; i < getNbPierres(); i++) {
 			for(int j = 0; j < getNbPierres(); j++) {
 				printf("[%d]",plateau[i*getNbPierres() + j]);
@@ -269,6 +333,21 @@ bool repetition(int x, int y,int playerValue) {
 	//Copie des plateaux à t-1 et t+1
 	tourSuiv = copyPlateau(plateau,size);
 	tourSuiv[y*getNbPierres() + x] = playerValue;
+	/*printf("Tour suivant :");
+	for(int i = 0; i < getNbPierres(); i++) {
+			for(int j = 0; j < getNbPierres(); j++) {
+				printf("[%d]",tourSuiv[i*getNbPierres() + j]);
+		}
+		printf("\n");
+	}
+
+		printf("Tour précédent :");
+		for(int i = 0; i < getNbPierres(); i++) {
+				for(int j = 0; j < getNbPierres(); j++) {
+					printf("[%d]",plateauT_1[i*getNbPierres() + j]);
+			}
+			printf("\n");
+		}*/
 		//Parcours des deux tableaux
 		for (int i = 0; i < size; i++) {
 			if(tourSuiv[i] == playerValue){

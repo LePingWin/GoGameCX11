@@ -61,9 +61,6 @@ void dessin_pierre(int c) {
 
 	filled_circle(getX(c),getY(c),10);
 	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
-	incrementeCptTours();
-
-
 }
 
 
@@ -78,6 +75,7 @@ void dessin_pierre(int c) {
  */
 void mouse_clicked(int bouton, int x, int y)
 {
+	refreshTable();
 	int i,j;
 	int largeurBordure = getLargeurBordure();
 	int taillePierre = getTaillePierre();
@@ -97,14 +95,21 @@ void mouse_clicked(int bouton, int x, int y)
 					if(repetition(i+1,j+1,playerValue) == 0) {
 						if( intersection_est_vide(getCoord(xp,yp)) == true) {
 							fill_plateau(i+1,j+1,playerValue);
-							printPlateau();
+							//printPlateau();
 							dessin_pierre(addPierre(xp,yp));
-							if(capturePion() == 1)
+							if(capturePion() == 1) {
 								refreshTable();
+							}
+							incrementeCptTours();
 						}
+						else {
+							string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"La case est deja utilise!");
+						}
+
 					}
 					else {
 						printf("\nRepetition, be careful !!");
+						string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Repetition !");
 					}
 
 				}
