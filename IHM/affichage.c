@@ -26,7 +26,10 @@ void draw_win()
 		line(largeurBordure,i, width_win()-largeurBordure, i);
 
 	color(1,1,1);
-	string(5,5,"Test Affichage chaine");
+	color(0,1,1);
+	filled_rectangle(getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2-10, 40, 20);
+
+
 }
 
 void add_dessin_pierre(int* c) {
@@ -75,6 +78,13 @@ void dessin_pierre(int c) {
  */
 void mouse_clicked(int bouton, int x, int y)
 {
+
+	if(x >= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20+40) {
+		if(y >= getLargeurBordure()/2-10 && y <= getLargeurBordure()/2-10+20) {
+			printf("hello");
+			//calculTerritoire();
+		}
+	}
 	refreshTable();
 	int i,j;
 	int largeurBordure = getLargeurBordure();
