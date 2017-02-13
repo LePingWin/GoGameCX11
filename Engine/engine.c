@@ -11,6 +11,9 @@ int* plateauT_1;
 int* plateau;
 int* tourSuiv;
 
+int* getPlateau(){
+	return plateau;
+}
 //accesseur
 int getNbPierres() {
 	return nb_pierres+1;
@@ -259,6 +262,41 @@ int addPierre(int xp, int yp) {
 	int size = getNbPierres()*getNbPierres();
 	plateauT_1 = copyPlateau(plateau,size);
 	Player p = getCurrentPlayer();
+	int tab[4];
+	getAdjacent(xp,yp, tab);
+	int coord = getCoord(xp, yp);
+
+	Adjacent anyAdjacent = isAnyPierreAdjacent(tab,p);
+	if(anyAdjacent.nbAdj == 1)  {
+		push_front(p.pierres[anyAdjacent.adjs[0]], coord);
+	} else if(anyAdjacent.nbAdj > 1) {
+		p = mergeChaines(anyAdjacent,p,coord);
+	} else {
+		p.pierres[p.nbListe] = liste_vide();
+		push_front(p.pierres[p.nbListe], coord);
+		p.nbListe++;
+	}
+	//printf("Player %s     ", p.nom);
+	for(int i =0; i < p.nbListe; i++) {
+		print(p.pierres[i]);
+		printf("Nb degre de liberte %d", getDegreLiberte(p.pierres[i]));
+		printf("\n");
+	}
+	printf("\n");
+
+	if(p.type == Blanc) {
+		P1 = p;
+	} else {
+		P2 = p;
+	}
+	free(anyAdjacent.adjs);
+	return coord;
+}
+
+int addPierreToPlayer(int xp, int yp,Player p) {
+
+	int size = getNbPierres()*getNbPierres();
+	plateauT_1 = copyPlateau(plateau,size);
 	int tab[4];
 	getAdjacent(xp,yp, tab);
 	int coord = getCoord(xp, yp);

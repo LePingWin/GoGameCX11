@@ -99,3 +99,7 @@ Player init_player(char* nom, PlayerType playerType);
  * p: pierre
  */
 void init_go(int p, int tp);
+
+int* getPlateau();
+
+int addPierreToPlayer(int xp, int yp,Player p);
