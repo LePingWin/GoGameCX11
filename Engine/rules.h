@@ -14,6 +14,7 @@ typedef struct Player{
 	//Tableaux de listes
 	Liste** pierres;
 	int nbListe;
+	bool aPasser;
 }Player;
 
 typedef struct Adjacent{

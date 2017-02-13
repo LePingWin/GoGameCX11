@@ -3,6 +3,8 @@
 #include "../Engine/rules.h"
 
 
+bool finDuGame = false;
+
 /**
  * Mettre ici son code pour dessiner dans la fenetre
  * 1er affichage + redessine si resize
@@ -26,8 +28,11 @@ void draw_win()
 		line(largeurBordure,i, width_win()-largeurBordure, i);
 
 	color(1,1,1);
-	color(0,1,1);
+	color(0.54,0.27,0.27);
 	filled_rectangle(getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2-10, 40, 20);
+	color( 0.0,0.0,0.0);
+
+	string(2+getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2+5,"Passer");
 
 
 }
@@ -81,50 +86,59 @@ void mouse_clicked(int bouton, int x, int y)
 
 	if(x >= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20+40) {
 		if(y >= getLargeurBordure()/2-10 && y <= getLargeurBordure()/2-10+20) {
-			printf("hello");
-			//calculTerritoire();
+			Player p = getOppositePlayer();
+			setAPasser(p,true);
+			if(checkFinDuJeu() == true) {
+				finDuGame = true;
+				color(0,0,0);
+				string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Fin du game !!");
+			}
 		}
 	}
-	refreshTable();
-	int i,j;
-	int largeurBordure = getLargeurBordure();
-	int taillePierre = getTaillePierre();
-	for(i = -1; i<getNbPierres()-1; i++) {
-		if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
-			for(j = -1; j<getNbPierres()-1; j++) {
-				if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
-					int xp = largeurBordure + (i+1)*taillePierre;
-					int yp = largeurBordure + (j+1)*taillePierre;
-					Player p = getCurrentPlayer();
-					int playerValue =0;
-					if(p.type == Blanc) {
-						playerValue = 1;
-					} else {
-						playerValue = 2;
-					}
-					if(repetition(i+1,j+1,playerValue) == 0) {
-						if( intersection_est_vide(getCoord(xp,yp)) == true) {
-							fill_plateau(i+1,j+1,playerValue);
-							//printPlateau();
-							dessin_pierre(addPierre(xp,yp));
-							if(capturePion() == 1) {
-								refreshTable();
+	if(finDuGame == false) {
+		refreshTable();
+		int i,j;
+		int largeurBordure = getLargeurBordure();
+		int taillePierre = getTaillePierre();
+		for(i = -1; i<getNbPierres()-1; i++) {
+			if((x >= largeurBordure + i*taillePierre + taillePierre/2) && (x < largeurBordure + (i+1)*taillePierre + taillePierre/2)) {
+				for(j = -1; j<getNbPierres()-1; j++) {
+					if((y >= largeurBordure + j*taillePierre + taillePierre/2) &&  (y < largeurBordure + (j+1)*taillePierre + taillePierre/2)) {
+						int xp = largeurBordure + (i+1)*taillePierre;
+						int yp = largeurBordure + (j+1)*taillePierre;
+						Player p = getCurrentPlayer();
+						int playerValue =0;
+						if(p.type == Blanc) {
+							playerValue = 1;
+						} else {
+							playerValue = 2;
+						}
+						if(repetition(i+1,j+1,playerValue) == 0) {
+							if( intersection_est_vide(getCoord(xp,yp)) == true) {
+								fill_plateau(i+1,j+1,playerValue);
+								//printPlateau();
+								dessin_pierre(addPierre(xp,yp));
+								if(capturePion() == 1) {
+									refreshTable();
+								}
+								incrementeCptTours();
 							}
-							incrementeCptTours();
+							else {
+								string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"La case est deja utilise!");
+							}
+
 						}
 						else {
-							string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"La case est deja utilise!");
+							printf("\nRepetition, be careful !!");
+							string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Repetition !");
 						}
 
 					}
-					else {
-						printf("\nRepetition, be careful !!");
-						string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Repetition !");
-					}
-
 				}
 			}
 		}
+		Player p = getOppositePlayer();
+		setAPasser(p,false);
 	}
 }
 
