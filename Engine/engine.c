@@ -404,12 +404,32 @@ int* copyPlateau(int* const src, size_t len) {
 	return p;
 }
 
+// set p.aPasser = value
+void setAPasser(Player p,bool value) {
+	p.aPasser = value;
+	if(p.type == Blanc) {
+		P1 = p;
+	} else {
+		P2 = p;
+	}
+}
+
+bool checkFinDuJeu() {
+	incrementeCptTours();
+	printf("P1 : %d P2: %d", P1.aPasser,P2.aPasser);
+	if(P1.aPasser == true && P2.aPasser == true) {
+		return true;
+	}
+	return false;
+}
+
 Player init_player(char* nom, PlayerType playerType) {
 	Player p;
 	p.nom = nom;
 	p.type = playerType;
 	p.pierres = malloc(sizeof(Liste*) * getNbPierres() * getNbPierres());
 	p.nbListe = 0;
+	p.aPasser = false;
 	return p;
 }
 

@@ -40,7 +40,7 @@ void loadStonesCoordinates(char* coords){
 					addPierreToPlayer(xp,yp,getPlayer(1));
 				}
 				p = strtok (NULL, "[");
-				
+
 			}
 	}
 	return;

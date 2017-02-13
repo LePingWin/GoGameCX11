@@ -36,7 +36,7 @@ Player getCurrentPlayer();
  * player a kipa le tour
  */
 
-Player getPlayer(int player);
+Player getOppositePlayer();
 
 /**
  * get player
@@ -90,6 +90,14 @@ int* copyPlateau(int* const src, size_t len);
 * supprimer les pions capturés
 */
 bool capturePion();
+/**
+* setter aPasser
+*/
+void setAPasser(Player p,bool value);
+/**
+* regarde si les deux joueurs ont passé, si oui fin du game
+*/
+bool checkFinDuJeu();
 /**
  * initialise les joueurs
  */
