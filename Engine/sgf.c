@@ -25,14 +25,14 @@ char* getLetterFromCoords(int c){
 
 // Récupère les coordonnées des pierres du joueur
 void loadStonesCoordinates(char* coords){
-	
+
 	if(coords[0] == 'A'){
 		char* p = strtok(coords,"[");
 		p = strtok(NULL,"[");
 		 while (p != NULL)
 			{
-				int xp = getCoordsFromLetter(p[0])*getNbPierres();
-				int yp = getCoordsFromLetter(p[1])*getNbPierres();
+				int xp = getLargeurBordure() + getCoordsFromLetter(p[0])*getTaillePierre();
+				int yp = getLargeurBordure() + getCoordsFromLetter(p[1])*getTaillePierre();
 				//Ajoute les pierres aux joueurs
 				if(coords[1] == 'W'){
 					addPierreToPlayer(xp,yp,getPlayer(0));
@@ -52,7 +52,7 @@ void loadSaveGame(const char* path){
    if ( file != NULL )
    {
       char line [ 128 ]; /* or other suitable maximum line size */
- 
+
       while ( fgets ( line, sizeof line, file ) != NULL ) /* read a line */
       {
          loadStonesCoordinates(line);
@@ -61,7 +61,7 @@ void loadSaveGame(const char* path){
    }
    else
    {
-      perror ( path ); 
+      perror ( path );
    }
 
 return;

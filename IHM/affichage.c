@@ -1,4 +1,5 @@
 #include "dessine.h"
+#include "affichage.h"
 #include "../Engine/engine.h"
 #include "../Engine/rules.h"
 #include "../Engine/sgf.h"
@@ -192,7 +193,7 @@ int main(int argc,char* argv[])
 	int nbPierres = 6;
 	int largeurBordure = 50;
 	init_go(nbPierres, taillePierre);
-	init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);			
+	init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);
 	if(argc > 0){
 	loadSaveGame(argv[1]);
 	refreshTable();
