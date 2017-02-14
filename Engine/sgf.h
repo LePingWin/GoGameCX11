@@ -17,3 +17,7 @@ char* getPlayerCoordinatesAsString(Player p);
 void writeSaveGame(const char* path);
 
 char* ajout_char(char *chaine, size_t n, char c);
+
+void loadSize(char* coords);
+
+int loadNumberPierre(const char* path);

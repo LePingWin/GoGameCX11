@@ -9,7 +9,7 @@
 
 void print_char(char array[], int size);
 
-void read(int array[], int size);
+void read1(int array[], int size);
 
 int valeur_max(int array[], int size);
 

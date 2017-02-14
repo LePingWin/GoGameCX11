@@ -22,7 +22,7 @@ puts("");
 return;
 }
 
-void read(int array[], int size){
+void read1(int array[], int size){
 int i;
 for(i = 0;i<size;i++){
 scanf("%d",&array[i]);

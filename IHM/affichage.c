@@ -7,6 +7,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+
 
 
 bool finDuGame = false;
@@ -105,7 +107,6 @@ void sauvegardePartie() {
  */
 void mouse_clicked(int bouton, int x, int y)
 {
-
 	if(x >= 10 + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= 10 + (getNbPierres()-1)/2*getTaillePierre()-20+40) {
 		if(y >= getLargeurBordure()/2-10 && y <= getLargeurBordure()/2-10+20) {
 			Player p = getOppositePlayer();
@@ -220,11 +221,25 @@ int main(int argc,char* argv[])
 	int taillePierre = 24;
 	int nbPierres = 6;
 	int largeurBordure = 50;
-	init_go(nbPierres, taillePierre);
-	init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);
-	if(argc > 0){
-		loadSaveGame(argv[1]);
+
+
+	if(argc == 3){
+		if(strcmp(argv[1],"-p") ==0)
+			nbPierres = atoi(argv[2]);
+		if(strcmp(argv[1],"-l") ==0) {
+			//loadSaveGame(argv[2]);
+			nbPierres = loadNumberPierre(argv[2]);
+			printf("%d\n",nbPierres );
+		}
+
+		init_go(nbPierres, taillePierre);
+		init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "Jeu de Go v0.4",0.2,0.2,0.6,largeurBordure);
 		refreshTable();
+		if(strcmp(argv[1],"-l") ==0) {
+			loadSaveGame(argv[2]);
+		}
+
+		//sendClick(1,true);
 	}
 	event_loop();
 	return EXIT_SUCCESS;

@@ -1,6 +1,6 @@
 #include "dessine.h"
 #include <string.h>
-
+#include <X11/extensions/XTest.h>
 
 int largeur_fenetre;
 int hauteur_fenetre;
@@ -99,6 +99,11 @@ void event_loop()
 void clear_win()
 {
 	XClearWindow(display, win);
+}
+
+void sendClick(int button,bool down) {
+	XTestFakeButtonEvent(display, button, down, CurrentTime);
+	XFlush(display);
 }
 
 void color(float r, float v, float b)

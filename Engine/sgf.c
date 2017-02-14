@@ -22,6 +22,19 @@ char getLetterFromCoords(int c){
 		return alphabetTable[c];
 	}
 }
+// Récupère le nombre de pierre de la partie
+int loadSize(char* coords){
+	int sz = 6;
+	if(coords[0] == 'S' && coords[1] == 'Z'){
+		char* p = strtok(coords,"[");
+		p = strtok(NULL,"[");
+		char str[10];
+		str[0]= p[0];
+		str[1]=p[1];
+		sz = atoi(str);
+	}
+	return sz;
+}
 
 // Récupère les coordonnées des pierres du joueur
 void loadStonesCoordinates(char* coords){
@@ -67,6 +80,32 @@ void loadSaveGame(const char* path){
 return;
 }
 
+int loadNumberPierre(const char* path) {
+	FILE *file = fopen ( path, "r" );
+	int number = 6;
+	if ( file != NULL )
+	{
+		 char line [ 128 ]; /* or other suitable maximum line size */
+
+		 while ( fgets ( line, sizeof line, file ) != NULL ) /* read a line */
+		 {
+				number = loadSize(line);
+				if(number != 6){
+					fclose ( file );
+					return number;
+				}
+				printf("NB PEIRRE %d\n",number );
+		 }
+		 fclose ( file );
+	}
+	else
+	{
+		 perror ( path );
+	}
+
+return number;
+}
+
 //permet d'ajouter un char à un char*
 char* ajout_char(char *chaine, size_t n, char c)
 {
@@ -106,11 +145,18 @@ char* getPlayerCoordinatesAsString(Player p, char* str){
 	return str;
 }
 
-//Ecris les lignes dans le fichier
+//Ecris les lignes dans le fichierfclose ( file );
 void writeSaveGame(const char* path){
 	FILE *file = fopen ( path, "w" );
 	char str[50];
 	char res[50];
+	char num[50] = "SZ[";
+	char size[50];
+	//strcat(num,"SZ[");
+	sprintf(size, "%d",getNbPierres());
+	strcat(num,size);
+	strcat(num,"]\n");
+	fprintf(file,"%s",num);
 	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(0),str));
 	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(1),res));
 

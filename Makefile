@@ -7,7 +7,7 @@ PROG=affichage
 all: $(PROG)
 
 $(PROG): $(OBJ)
-	$(CC) -g -o $@ $^ -lX11
+	$(CC) -g -o $@ $^ -lX11 -lXtst -lXext
 
 %.o: %.c %.h
 	$(CC) -g -c $<
