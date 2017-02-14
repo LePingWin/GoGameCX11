@@ -153,7 +153,7 @@ void writeSaveGame(const char* path){
 	char num[50] = "SZ[";
 	char size[50];
 	//strcat(num,"SZ[");
-	sprintf(size, "%d",getNbPierres());
+	sprintf(size, "%d",getNbPierres()-1);
 	strcat(num,size);
 	strcat(num,"]\n");
 	fprintf(file,"%s",num);
