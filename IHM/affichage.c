@@ -3,6 +3,10 @@
 #include "../Engine/engine.h"
 #include "../Engine/rules.h"
 #include "../Engine/sgf.h"
+#include <time.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 
 bool finDuGame = false;
@@ -31,12 +35,14 @@ void draw_win()
 
 	color(1,1,1);
 	color(0.54,0.27,0.27);
-	filled_rectangle(getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2-10, 40, 20);
+	filled_rectangle(10 + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2-10, 40, 20);
 	color( 0.0,0.0,0.0);
+	string(14 + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2+5,"Passer");
 
-	string(2+getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2+5,"Passer");
-
-
+	color(0.54,0.27,0.27);
+	filled_rectangle(70 + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2-10, 70, 20);
+	color( 0.0,0.0,0.0);
+	string(74 + (getNbPierres()-1)/2*getTaillePierre()-20, getLargeurBordure()/2+5,"Sauvegarder");
 }
 
 void add_dessin_pierre(int* c) {
@@ -73,7 +79,21 @@ void dessin_pierre(int c) {
 	printf("Nouvelle Pierre posé en : %d,%d \n", getX(c), getY(c));
 }
 
-
+void sauvegardePartie() {
+	time_t t = time(NULL); /* t contient maintenant la date et l'heure courante */
+	struct tm *info;
+	info = localtime(&t);
+	//char* str = ctime(&t);
+	char buffer[256];
+	strftime(buffer,256,"%Y%m%d_%Hh%M", info);
+	char tour[5];
+	sprintf(tour, "%d",getCptTours()-1);
+	char* message = "_JeuGo_Tour_";
+	strcat(buffer,message);
+	strcat(buffer,tour);
+	strcat(buffer, ".sgf");
+	writeSaveGame(buffer);
+}
 
 
 
@@ -86,7 +106,7 @@ void dessin_pierre(int c) {
 void mouse_clicked(int bouton, int x, int y)
 {
 
-	if(x >= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= getLargeurBordure() + (getNbPierres()-1)/2*getTaillePierre()-20+40) {
+	if(x >= 10 + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= 10 + (getNbPierres()-1)/2*getTaillePierre()-20+40) {
 		if(y >= getLargeurBordure()/2-10 && y <= getLargeurBordure()/2-10+20) {
 			Player p = getOppositePlayer();
 			setAPasser(p,true);
@@ -95,6 +115,14 @@ void mouse_clicked(int bouton, int x, int y)
 				color(0,0,0);
 				string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Fin du game !!");
 			}
+		}
+	}
+
+	if(x >= 70 + (getNbPierres()-1)/2*getTaillePierre()-20 && x <= 70 + (getNbPierres()-1)/2*getTaillePierre()-20 + 70) {
+		if(y >= getLargeurBordure()/2-10 && y <= getLargeurBordure()/2-10+20) {
+			sauvegardePartie();
+			color(0,0,0);
+			string(50,50+(getNbPierres()-1)*getTaillePierre()+30,"Sauvegarde du game !!");
 		}
 	}
 	if(finDuGame == false) {
@@ -195,8 +223,8 @@ int main(int argc,char* argv[])
 	init_go(nbPierres, taillePierre);
 	init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "v0.1",0.2,0.2,0.6,largeurBordure);
 	if(argc > 0){
-	loadSaveGame(argv[1]);
-	refreshTable();
+		loadSaveGame(argv[1]);
+		refreshTable();
 	}
 	event_loop();
 	return EXIT_SUCCESS;

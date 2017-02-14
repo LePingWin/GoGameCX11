@@ -7,10 +7,10 @@ PROG=affichage
 all: $(PROG)
 
 $(PROG): $(OBJ)
-	$(CC) -o $@ $^ -lX11
+	$(CC) -g -o $@ $^ -lX11
 
 %.o: %.c %.h
-	$(CC) -c $<
+	$(CC) -g -c $<
 
 clean:
 	rm $(PROG) *.o

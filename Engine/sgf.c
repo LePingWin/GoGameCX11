@@ -17,9 +17,9 @@ int getCoordsFromLetter(char letter){
 }
 
 //Récupère la lettre associée à la coordonnée
-char* getLetterFromCoords(int c){
+char getLetterFromCoords(int c){
 	if(c<26){
-		return &alphabetTable[c];
+		return alphabetTable[c];
 	}
 }
 
@@ -67,38 +67,52 @@ void loadSaveGame(const char* path){
 return;
 }
 
+//permet d'ajouter un char à un char*
+char* ajout_char(char *chaine, size_t n, char c)
+{
+	size_t len = strlen(chaine);
+	/* vérifie qu'il y a assez de place */
+	if (len + 1 >= n) return NULL;
+	chaine[len] = c;
+	chaine[len + 1] = '\0';
+	return chaine;
+}
+
 //Récupère la chaîne des pions à écrire pour un joueur
-char* getPlayerCoordinatesAsString(Player p){
+char* getPlayerCoordinatesAsString(Player p, char* str){
 	int* plateau = getPlateau();
-	char* res = "A";
+	strcpy(str,"A");
 	if(p.type == 0){
-		strcat(res,"W");
+		strcat(str,"W");
 	}else{
-		strcat(res,"B");
+		strcat(str,"B");
 	}
 	for(int i = 0; i < getNbPierres(); i++) {
 			for(int j = 0; j < getNbPierres(); j++) {
 				int tmp = plateau[i*getNbPierres() + j];
 				if(tmp == p.type+1){
-					char* tmpX = getLetterFromCoords(i);
-					char* tmpY = getLetterFromCoords(j);
-					strcat(res,"[");
-					strcat(res,tmpX);
-					strcat(res, tmpY);
-					strcat(res,"]");
+					char tmpX = getLetterFromCoords(j);
+					char tmpY = getLetterFromCoords(i);
+					strcat(str,"[");
+					ajout_char(str, 50, tmpX);
+					ajout_char(str, 50, tmpY);
+
+					printf("tmpX %c, tmpY %c",tmpX,tmpY);
+					strcat(str,"]");
 				}
 		}
 	}
-	//strcat(res,"\n");
-	return res;
+	strcat(str,"\n");
+	return str;
 }
 
 //Ecris les lignes dans le fichier
 void writeSaveGame(const char* path){
 	FILE *file = fopen ( path, "w" );
-
-	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(0)));
-	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(1)));
+	char str[50];
+	char res[50];
+	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(0),str));
+	fprintf(file,"%s", getPlayerCoordinatesAsString(getPlayer(1),res));
 
 	fclose(file);
 
