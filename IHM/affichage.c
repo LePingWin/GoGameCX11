@@ -237,10 +237,14 @@ int main(int argc,char* argv[])
 		refreshTable();
 		if(strcmp(argv[1],"-l") ==0) {
 			loadSaveGame(argv[2]);
+			incrementeCptTours();
+			
 		}
-
-		//sendClick(1,true);
+	} else {
+		init_go(nbPierres, taillePierre);
+		init_win(taillePierre*nbPierres+largeurBordure*2,taillePierre*nbPierres+largeurBordure*2, "Jeu de Go v0.4",0.2,0.2,0.6,largeurBordure);
 	}
+
 	event_loop();
 	return EXIT_SUCCESS;
 }

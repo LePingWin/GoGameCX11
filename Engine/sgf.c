@@ -133,8 +133,8 @@ char* getPlayerCoordinatesAsString(Player p, char* str){
 					char tmpX = getLetterFromCoords(j);
 					char tmpY = getLetterFromCoords(i);
 					strcat(str,"[");
-					ajout_char(str, 50, tmpX);
-					ajout_char(str, 50, tmpY);
+					ajout_char(str, 2048, tmpX);
+					ajout_char(str, 2048, tmpY);
 
 					printf("tmpX %c, tmpY %c",tmpX,tmpY);
 					strcat(str,"]");
@@ -148,8 +148,8 @@ char* getPlayerCoordinatesAsString(Player p, char* str){
 //Ecris les lignes dans le fichierfclose ( file );
 void writeSaveGame(const char* path){
 	FILE *file = fopen ( path, "w" );
-	char str[50];
-	char res[50];
+	char str[2048];
+	char res[2048];
 	char num[50] = "SZ[";
 	char size[50];
 	//strcat(num,"SZ[");
